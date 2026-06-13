@@ -77,3 +77,60 @@ def get_all_analyses():
     conn.close()
 
     return data
+
+
+# =========================
+# Dashboard Functions
+# =========================
+
+def get_total_analyses():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT COUNT(*) FROM analyses"
+    )
+
+    total = cursor.fetchone()[0]
+
+    cursor.close()
+    conn.close()
+
+    return total
+
+
+def get_average_risk_score():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT AVG(risk_score) FROM analyses"
+    )
+
+    avg_score = cursor.fetchone()[0]
+
+    cursor.close()
+    conn.close()
+
+    return round(avg_score or 0, 2)
+
+
+def get_threat_count(threat_level):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT COUNT(*)
+        FROM analyses
+        WHERE threat_level = %s
+        """,
+        (threat_level,)
+    )
+
+    count = cursor.fetchone()[0]
+
+    cursor.close()
+    conn.close()
+
+    return count
