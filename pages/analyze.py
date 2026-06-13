@@ -23,9 +23,12 @@ if st.button("Analyze"):
             f"{result['risk_score']}%"
         )
 
-        st.write(
-            f"Threat Level: {result['threat_level']}"
-        )
+        if result["threat_level"] == "CRITICAL":
+            st.error(f"Threat Level: {result['threat_level']}")
+        elif result["threat_level"] == "HIGH":
+            st.warning(f"Threat Level: {result['threat_level']}")
+        else:
+            st.info(f"Threat Level: {result['threat_level']}")
 
         st.write("### Indicators")
         for indicator in result["indicators"]:
